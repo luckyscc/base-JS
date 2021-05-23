@@ -27,49 +27,24 @@ export default class Calculator {
   }
 
   defineData () {
-    let _obj = {}
-    let method = 'plus'
-    let fVal = 0
-    let sVal = 0
+    let target = {
+      method: 'plus',
+      fVal: 0,
+      sVal: 0,
+    }
 
     const _self = this
 
-    Object.defineProperties(_obj, {
-      method: {
-        get () {
-          return method
-        },
-
-        set (newVal) {
-          method = newVal
-          _self.setResult(_self.data.method, _self.data.fVal, _self.data.sVal)
-        }
+    return new Proxy(target, {
+      get (target, prop) {
+        return target[prop]
       },
-
-      fVal:{
-        get () {
-          return fVal
-        },
-
-        set (newVal) {
-          fVal = newVal
-          _self.setResult(_self.data.method, _self.data.fVal, _self.data.sVal)
-        }
-      },
-
-      sVal:{
-        get () {
-          return sVal
-        },
-
-        set (newVal) {
-          sVal = newVal
-          _self.setResult(_self.data.method, _self.data.fVal, _self.data.sVal)
-        }
+      set (target, prop, value) {
+        target[prop] = value
+        _self.setResult(_self.data.method, _self.data.fVal, _self.data.sVal)
+        return true
       }
     })
-
-    return _obj
   }
 
   render () {
